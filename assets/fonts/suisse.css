@@ -1,0 +1,13 @@
+@font-face {
+	font-family: 'Suisse Regular';
+  src: local('Suisse-Regular');
+  /* url('./SuisseIntl-Regular-WebS.woff2') format('woff2'), 
+  url('./SuisseIntl-Regular-WebS.woff') format('woff'),
+  url('./SuisseIntl-Regular-WebS.ttf') format('truetype'); */
+}
+@font-face {
+  font-family: 'Suisse Medium';
+  src: local('Suisse-Medium');
+	/* src: url('./SuisseIntl-Medium-WebS.woff2') format('woff2'), url('./SuisseIntl-Medium-WebS.woff') format('woff'),
+		url('./SuisseIntl-Medium-WebS.ttf') format('truetype'); */
+}

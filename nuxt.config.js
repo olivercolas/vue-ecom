@@ -24,11 +24,13 @@ module.exports = {
 	/*
   ** Global CSS
   */
-	css: [],
+	css: ['~/assets/fonts/suisse.css'],
 	/*
   ** Plugins to load before mounting the App
   */
-	plugins: [],
+	plugins: [
+		'~/plugins/api'
+	],
 	/*
   ** Nuxt.js dev-modules
   */

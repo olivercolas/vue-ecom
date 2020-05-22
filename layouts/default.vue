@@ -1,5 +1,5 @@
 <template>
-  <v-app :style="{background: themeBg}">
+  <v-app class="f-reg" :style="{background: themeBg}">
     <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
@@ -25,19 +25,19 @@
       </v-list>
     </v-navigation-drawer>-->
     <v-app-bar
-      fixed
-      app
+      :absolute="!windowScrollYGreaterThanZero"
+      :fixed="windowScrollYGreaterThanZero"
       elevation="0"
       hide-on-scroll
       height="80px"
       :style="{background: themeBg, borderBottom: appBarBorderBottom, transition: 'all 0.1s'}"
-      v-scroll="onScroll"
+      v-scroll="onScrollSetYPosition"
     >
       <logo class="mobile-only" />
       <link-list class="not-mobile-only" :links="headerLinks.left" />
       <v-spacer />
       <link-list class="not-mobile-only" :links="headerLinks.right" />
-      <button type="button" class="open-cart" data-count="0"></button>
+      <button type="button" class="open-cart" :data-count="cartCount" @click="handleCartClick"></button>
       <v-app-bar-nav-icon
         class="mobile-only"
         @click.stop="drawer = !drawer"
@@ -47,16 +47,38 @@
     <v-content>
       <nuxt />
     </v-content>
+
+    <v-snackbar
+      :value="snackBar"
+      :multiLine="$store.state.snackbar.multiLine"
+      :timeout="$store.state.snackbar.timeout"
+      :bottom="$store.state.snackbar.bottom"
+      :top="$store.state.snackbar.top"
+      :vertical="$store.state.snackbar.vertical"
+      :color="$store.state.snackbar.color !== '' ? $store.state.snackbar.color : null"
+      @click="$store.dispatch('snackbar/close')"
+    >
+      <v-spacer></v-spacer>
+      {{ $store.state.snackbar.message }}
+    </v-snackbar>
+
+    <v-dialog :value="showCart" fullscreen hide-overlay transition="slide-y-transition">
+      <v-row justify="center" style="margin:0;">
+        <cart />
+      </v-row>
+    </v-dialog>
   </v-app>
 </template>
 
 <script>
 import Logo from "~/components/Logo";
 import LinkList from "~/components/LinkList";
+import Cart from "~/components/Cart";
 export default {
   components: {
     Logo,
-    LinkList
+    LinkList,
+    Cart
   },
   data() {
     return {
@@ -87,6 +109,7 @@ export default {
         ]
       },
       drawer: false,
+      windowScrollYGreaterThanZero: false,
       items: [
         {
           icon: "mdi-apps",
@@ -99,35 +122,63 @@ export default {
           to: "/inspire"
         }
       ],
-      title: "Vuetify.js",
-      appBarBorderBottom: "0px"
+      title: "Vuetify.js"
     };
   },
-  async fetch({ store }) {
-      await store.dispatch('products/getProducts')
+  mounted() {
+    this.$store.dispatch("products/getProducts");
   },
   computed: {
     themeBg() {
       return this.$vuetify.theme.themes.light.background;
+    },
+    snackBar() {
+      return this.$store.state.snackbar.show || false;
+    },
+    cartCount() {
+      return this.$store.getters["cart/itemCount"];
+    },
+    showCart() {
+      return this.$store.state.cart.show;
+    },
+    appBarBorderBottom() {
+      return this.windowScrollYGreaterThanZero ? "1px solid #dfded4" : "0px"
     }
   },
   methods: {
-    onScroll(event) {
+    onScrollSetYPosition(event) {
       const scrollY =
         window.scrollY ||
         window.scrollTop ||
         document.getElementsByTagName("html")[0].scrollTop;
       if (scrollY > 0) {
-        this.appBarBorderBottom = "1px solid #dfded4";
+        this.windowScrollYGreaterThanZero = true
       } else {
-        this.appBarBorderBottom = "0px";
+        this.windowScrollYGreaterThanZero = false
       }
+    },
+    handleCartClick() {
+      this.$store.dispatch("cart/toggleCart").then(result => {
+        if (!result) {
+          this.$store.dispatch("snackbar/open", {
+            message: "You have no items in your cart",
+            type: null
+          });
+        }
+      });
     }
   }
 };
 </script>
 
 <style lang="scss">
+body {
+  font-family: "Suisse Regular", sans-serif;
+}
+.f-reg {
+  font-family: "Suisse Regular", sans-serif;
+}
+
 input,
 textarea,
 button,
@@ -137,20 +188,35 @@ a {
   outline: none;
 }
 .mobile-only {
-  display: block;
+  display: block !important;
 }
 @media screen and (min-width: $sm) {
   .mobile-only {
-    display: none;
+    display: none !important;
   }
 }
 .not-mobile-only {
-  display: none;
+  display: none !important;
 }
 @media screen and (min-width: $sm) {
   .not-mobile-only {
-    display: block;
+    display: block !important;
   }
+}
+.v-label {
+  color: #333 !important;
+}
+.v-snack__wrapper {
+  position: fixed;
+  width: 100vw;
+  max-width: 100vw;
+  top: 0px;
+  left: 0px;
+  border-radius: 0px;
+  padding: 0 40px;
+  height: 65px;
+  font-size: 0.99rem;
+  font-weight: 600;
 }
 
 .open-cart {
@@ -158,9 +224,12 @@ a {
   height: 26px;
   width: 26px;
   line-height: 26px;
-  margin: 0 0 0 5px;
+  margin: 0 0 0 25px;
   padding: 0;
   position: relative;
+  font-size: 0.8em;
+  color: white;
+
   &[data-count="0"] {
     font-size: 0;
   }

@@ -1,11 +1,11 @@
 export const state = () => ({
-    products: {},
+    list: {},
     // selectedProduct: null,
 })
 
 export const mutations = {
     SET_PRODUCTS(state, payload) {
-        state.products = payload
+        state.list = payload
     },
     // SELECT_PRODUCT(state, payload) {
     //     state.selectedProduct = payload
@@ -14,7 +14,7 @@ export const mutations = {
 
 export const getters = {
     getProductById: state => id => {
-        return state.products[id]
+        return state.list[id]
     },
 }
 
