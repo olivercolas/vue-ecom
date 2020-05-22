@@ -142,7 +142,7 @@ export default {
       return this.$store.state.cart.show;
     },
     appBarBorderBottom() {
-      return this.windowScrollYGreaterThanZero ? "1px solid #dfded4" : "0px"
+      return this.windowScrollYGreaterThanZero ? "1px solid #dfded4" : "0px";
     }
   },
   methods: {
@@ -152,9 +152,9 @@ export default {
         window.scrollTop ||
         document.getElementsByTagName("html")[0].scrollTop;
       if (scrollY > 0) {
-        this.windowScrollYGreaterThanZero = true
+        this.windowScrollYGreaterThanZero = true;
       } else {
-        this.windowScrollYGreaterThanZero = false
+        this.windowScrollYGreaterThanZero = false;
       }
     },
     handleCartClick() {
@@ -189,6 +189,19 @@ a {
 }
 .mobile-only {
   display: block !important;
+}
+.cart-item-quantity {
+  .v-input {
+    height: 40px;
+    &__control > div {
+      min-height: 0 !important;
+      height: 40px;
+      padding-left:16px !important;
+    }
+    &__append-inner {
+      margin-top: 7px;
+    }
+  }
 }
 @media screen and (min-width: $sm) {
   .mobile-only {
