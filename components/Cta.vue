@@ -1,33 +1,14 @@
 <template>
-  <button @click="onClick" type="button">Add to your cart - {{formattedPrice}}</button>
+  <button @click="onClick" type="button" :style="{backgroundColor, color}">{{text}}</button>
 </template>
 
 <script>
 export default {
   props: {
-    price: String,
-    currency: String,
+    text: String,
+    backgroundColor: String,
+    color: String,
     onClick: Function
-  },
-  data() {
-    return {
-      updatedCurrency: "",
-      updatedPrice: ""
-    };
-  },
-  computed: {
-    formattedPrice() {
-      if (this.currency && this.price) {
-        switch (this.currency) {
-          case "GBP":
-            return "£" + this.price;
-          default:
-            return "$" + this.price;
-        }
-      } else {
-        return "";
-      }
-    }
   }
 };
 </script>

@@ -28,8 +28,7 @@
       <cta
         :onClick="handleCtaClick"
         class="cta"
-        :price="productVal('price')"
-        :currency="productVal('currency')"
+        :text="addToCartText"
       />
       <product-details class="details" :details="productVal('details')" />
       <logo class="logo" height="38px" width="100px" />
@@ -67,6 +66,22 @@ export default {
         return "400px";
       } else if (this.windowSize <= 640 && this.selectedSKU === 1) {
         return "262px";
+      }
+    },
+    addToCartText() {
+      if(Object.keys(this.product).length > 0) {
+        const { currency, price } = this.product
+        const text = "Add to your cart - "
+        if (currency && price) {
+          switch (currency) {
+            case "GBP":
+              return text + "£" + price;
+            default:
+              return text + "$" + price;
+          }
+        } else {
+          return "";
+        }
       }
     }
   },
