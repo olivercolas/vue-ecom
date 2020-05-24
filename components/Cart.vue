@@ -241,7 +241,8 @@ export default {
   }
 
   .cart-title-sku.not-mobile-only,
-  .cart-title-quantity.not-mobile-only {
+  .cart-title-quantity.not-mobile-only,
+  .cart-delivery-info {
     display: flex !important;
   }
 
@@ -270,6 +271,13 @@ export default {
     }
 
     border-top: 0;
+  }
+
+  .cart-delivery-info {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    padding-right: 15px;
   }
 }
 @media screen and (min-width: $lg) {
@@ -449,7 +457,7 @@ export default {
   margin-left: 0px;
 }
 
-.cart-delivery-info{
-  
+.cart-delivery-info {
+
 }
 </style>
