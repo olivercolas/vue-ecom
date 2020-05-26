@@ -1,29 +1,5 @@
 <template>
   <v-app class="f-reg" :style="{background: themeBg}">
-    <!-- <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      width="100%"
-      top
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>-->
     <v-app-bar
       :absolute="!windowScrollYGreaterThanZero"
       :fixed="windowScrollYGreaterThanZero"
@@ -67,6 +43,9 @@
         <cart />
       </v-row>
     </v-dialog>
+    <v-dialog :value="true" transition="slide-y-transition">
+      <message-dialog />
+    </v-dialog>
   </v-app>
 </template>
 
@@ -74,11 +53,13 @@
 import Logo from "~/components/Logo";
 import LinkList from "~/components/LinkList";
 import Cart from "~/components/Cart";
+import MessageDialog from "~/components/MessageDialog";
 export default {
   components: {
     Logo,
     LinkList,
-    Cart
+    Cart,
+    MessageDialog,
   },
   data() {
     return {
@@ -196,7 +177,7 @@ a {
     &__control > div {
       min-height: 0 !important;
       height: 40px;
-      padding-left:16px !important;
+      padding-left: 16px !important;
     }
     &__append-inner {
       margin-top: 7px;
