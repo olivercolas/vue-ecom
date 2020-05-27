@@ -16,18 +16,6 @@ export const mutations = {
     SET_COLOR: set('color'),
     SET_MESSAGE: set('message')
 }
-
-function convertType(type) {
-    switch (type) {
-        case 'error':
-            return 'error'
-        case 'success':
-            return 'green darken-1'
-        case 'info':
-            return 'info'
-        default: 'black'
-    }
-}
 export const actions = {
     open({ state, commit, dispatch }, { message, type }) {
         commit('SET_COLOR', type ? type : '')
