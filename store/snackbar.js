@@ -14,14 +14,7 @@ export const state = () => ({
 export const mutations = {
     SET_SHOW: set('show'),
     SET_COLOR: set('color'),
-    SET_MESSAGE: set('message'),
-    UPDATE_SNACKBAR({ state }, payload) {
-        this.state.options.multiLine = payload.multiLine
-        this.state.options.timeout = payload.timeout
-        this.state.options.bottom = payload.bottom
-        this.state.options.vertical = payload.vertical
-        this.state.options.color = payload.color
-    },
+    SET_MESSAGE: set('message')
 }
 
 function convertType(type) {
@@ -50,9 +43,5 @@ export const actions = {
     },
     close({ commit }) {
         commit('SET_SHOW', false)
-    },
-    customOpen({ commit }, options) {
-        options.type = convertType(options.type)
-        commit('UPDATE_SNACKBAR', options)
-    },
+    }
 }
