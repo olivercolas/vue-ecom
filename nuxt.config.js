@@ -24,7 +24,7 @@ module.exports = {
 	/*
   ** Global CSS
   */
-	css: ['~/assets/fonts/suisse.css'],
+	css: ['~/assets/fonts/suisse.css', '~/assets/css/global.scss'],
 	/*
   ** Plugins to load before mounting the App
   */
@@ -58,7 +58,7 @@ module.exports = {
   */
 	vuetify: {
 		customVariables: [
-			'~/assets/variables.scss'
+			'~/assets/css/variables.scss'
 		],
 		theme: {
 			dark: false,
