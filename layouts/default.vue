@@ -6,8 +6,6 @@
       <nuxt />
     </v-content>
 
-    <snackbar />
-
     <v-dialog
       :value="showCart"
       fullscreen
@@ -19,39 +17,36 @@
       </v-row>
     </v-dialog>
 
-    <message-dialog
-      icon="mdi-information-outline"
-      title="cart-exceed-title"
-      description="cart-exceed-message"
-      :link="{ url: '#', text: 'card-exceed-question' }"
-    />
+    <snackbar />
+    <message-dialog />
   </v-app>
 </template>
 
-<script>
-import AppBar from '~/components/AppBar';
-import Snackbar from '~/components/Snackbar';
-import Cart from '~/components/Cart';
-import MessageDialog from '~/components/MessageDialog';
-export default {
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import { State } from 'vuex-class';
+import AppBar from '~/components/AppBar.vue';
+import Snackbar from '~/components/Snackbar.vue';
+import Cart from '~/components/Cart.vue';
+import MessageDialog from '~/components/MessageDialog.vue';
+import Theme from '~/mixins/theme';
+
+@Component({
   components: {
     AppBar,
     Snackbar,
     Cart,
     MessageDialog
-  },
+  }
+})
+export default class Layout extends mixins(Theme) {
+  @State(state => state.cart.show || false) showCart: boolean;
+
   mounted() {
     this.$store.dispatch('products/getProducts');
-  },
-  computed: {
-    themeBg() {
-      return this.$vuetify.theme.themes.light.background;
-    },
-    showCart() {
-      return this.$store.state.cart.show;
-    }
   }
-};
+}
 </script>
 
 <style lang="scss">

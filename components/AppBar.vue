@@ -32,9 +32,11 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
 import { Getter } from 'vuex-class';
 import Logo from '~/components/Logo.vue';
 import LinkList from '~/components/LinkList.vue';
+import Theme from '~/mixins/theme';
 
 @Component({
   components: {
@@ -42,7 +44,7 @@ import LinkList from '~/components/LinkList.vue';
     LinkList
   }
 })
-export default class AppBar extends Vue {
+export default class AppBar extends mixins(Theme) {
   @Getter('cart/itemCount') cartCount: number;
 
   headerLinks = {
@@ -73,10 +75,6 @@ export default class AppBar extends Vue {
   };
 
   windowScrollYGreaterThanZero = false;
-
-  get themeBg() {
-    return this.$vuetify.theme.themes.light.background;
-  }
 
   get appBarBorderBottom() {
     return this.windowScrollYGreaterThanZero ? '1px solid #dfded4' : '0px';
