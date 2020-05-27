@@ -6,7 +6,7 @@
           :src="selectedImage"
           class="product_image"
           v-resize="onResize"
-          :style="{height: adjustImageSize}"
+          :style="{ height: adjustImageSize }"
         />
         <v-radio-group @change="onProductSKUChange" v-model="selectedSKU">
           <v-row align-content="center" justify="center">
@@ -22,14 +22,15 @@
           </v-row>
         </v-radio-group>
       </div>
-      <link-list no-padding class="breadcrumbs" :links="productVal('breadcrumbs')" dot-separate />
-      <h1 class="productTitle">{{productVal('title')}}</h1>
-      <p class="description">{{productVal('description')}}</p>
-      <cta
-        :onClick="handleCtaClick"
-        class="cta"
-        :text="addToCartText"
+      <link-list
+        no-padding
+        class="breadcrumbs"
+        :links="productVal('breadcrumbs')"
+        dot-separate
       />
+      <h1 class="productTitle">{{ productVal('title') }}</h1>
+      <p class="description">{{ productVal('description') }}</p>
+      <cta :onClick="handleCtaClick" class="cta" :text="addToCartText" />
       <product-details class="details" :details="productVal('details')" />
       <logo class="logo" height="38px" width="100px" />
     </div>
@@ -38,10 +39,10 @@
 </template>
 
 <script>
-import Logo from "~/components/Logo";
-import LinkList from "~/components/LinkList";
-import ProductDetails from "~/components/ProductDetails";
-import Cta from "~/components/Cta";
+import Logo from '~/components/Logo';
+import LinkList from '~/components/LinkList';
+import ProductDetails from '~/components/ProductDetails';
+import Cta from '~/components/Cta';
 export default {
   components: {
     Logo,
@@ -51,36 +52,36 @@ export default {
   },
   data() {
     return {
-      selectedImage: "",
+      selectedImage: '',
       selectedSKU: 0,
       windowSize: null
     };
   },
   computed: {
     product() {
-      const val = this.$store.getters["products/getProductById"]("0");
+      const val = this.$store.getters['products/getProductById']('0');
       return val ? val : {};
     },
     adjustImageSize() {
       if (this.windowSize > 640 && this.selectedSKU === 1) {
-        return "400px";
+        return '400px';
       } else if (this.windowSize <= 640 && this.selectedSKU === 1) {
-        return "262px";
+        return '262px';
       }
     },
     addToCartText() {
-      if(Object.keys(this.product).length > 0) {
-        const { currency, price } = this.product
-        const text = "Add to your cart - "
+      if (Object.keys(this.product).length > 0) {
+        const { currency, price } = this.product;
+        const text = 'Add to your cart - ';
         if (currency && price) {
           switch (currency) {
-            case "GBP":
-              return text + "£" + price;
+            case 'GBP':
+              return text + '£' + price;
             default:
-              return text + "$" + price;
+              return text + '$' + price;
           }
         } else {
-          return "";
+          return '';
         }
       }
     }
@@ -102,22 +103,24 @@ export default {
     },
     handleCtaClick(event) {
       this.$store
-        .dispatch("cart/add", {
+        .dispatch('cart/add', {
           ...this.product,
           sku: this.product.variants[this.selectedSKU].sku,
           quantity: 1
         })
-        .then(_ => {
-          this.$store.dispatch("snackbar/open", {
-            message: `${this.product.title} added to the cart`,
-            type: null
-          });
+        .then(added => {
+          if (added) {
+            this.$store.dispatch('snackbar/open', {
+              message: `${this.product.title} added to the cart`,
+              type: null
+            });
+          }
         });
     }
   },
   watch: {
     product(newVal) {
-      if (this.selectedImage === "") {
+      if (this.selectedImage === '') {
         this.selectedImage = newVal.variants[0].image;
       }
     }
@@ -129,18 +132,17 @@ export default {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 40px minmax(310px, auto) minmax(45px, auto) minmax(
-      60px,
-      auto
-    ) 127px 250px;
+  grid-template-rows:
+    40px minmax(310px, auto) minmax(45px, auto) minmax(60px, auto)
+    127px 250px;
   gap: 1px 1px;
   grid-template-areas:
-    "breadcrumbs"
-    "product"
-    "productTitle"
-    "description"
-    "cta"
-    "details";
+    'breadcrumbs'
+    'product'
+    'productTitle'
+    'description'
+    'cta'
+    'details';
   padding: 30px 20px;
 }
 .logo {
@@ -177,12 +179,12 @@ export default {
     grid-template-rows: minmax(414px, auto) 45px 55px minmax(35px, auto) 100px 232px;
     gap: 1px 1px;
     grid-template-areas:
-      "product product"
-      "breadcrumbs ."
-      "productTitle description"
-      ". description"
-      ". cta"
-      ". details";
+      'product product'
+      'breadcrumbs .'
+      'productTitle description'
+      '. description'
+      '. cta'
+      '. details';
     padding: 113px 40px;
   }
 
@@ -223,11 +225,11 @@ export default {
       minmax(60px, auto);
     gap: 1px 1px;
     grid-template-areas:
-      "logo . breadcrumbs"
-      ". . productTitle"
-      "product product description"
-      "product product details"
-      "product product cta";
+      'logo . breadcrumbs'
+      '. . productTitle'
+      'product product description'
+      'product product details'
+      'product product cta';
     padding: 100px 100px 0 40px;
   }
 

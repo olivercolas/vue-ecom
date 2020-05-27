@@ -9,13 +9,7 @@
       <div class="cart-title-empty cart-title-empty-3 not-mobile-only"></div>
       <div class="cart-close">
         <button type="button" @click="$store.dispatch('cart/toggleCart')">
-          <svg class="Icon" role="img" viewBox="0 0 50 50">
-            <g>
-              <polygon
-                points="50,5 45,0 25,20 5,0 0,5 20,25 0,45 5,50 25,30 45,50 50,45 30,25"
-              />
-            </g>
-          </svg>
+          <CloseIcon />
         </button>
       </div>
 
@@ -99,10 +93,12 @@
 <script>
 import Cta from '~/components/Cta';
 import PaymentIcon from '~/components/PaymentIcon';
+import CloseIcon from '~/components/CloseIcon';
 export default {
   components: {
     Cta,
-    PaymentIcon
+    PaymentIcon,
+    CloseIcon
   },
   data() {
     return {
@@ -215,7 +211,7 @@ export default {
     position: relative;
     height: 100vh;
     width: 100vw;
-    background-color: #333;
+    background-color: $cartBg;
     color: white;
     overflow: auto;
   }
@@ -229,8 +225,8 @@ export default {
     button {
       fill: $cartSecondaryColor;
       height: 19px;
-      padding: 0 2px;
       width: 19px;
+      padding: 0 2px;
       margin-right: 25px;
     }
   }
@@ -273,15 +269,6 @@ export default {
       &-#{$class} {
         grid-area: cart-title-#{$class};
       }
-    }
-
-    &,
-    &-sku,
-    &-quantity,
-    &-empty,
-    .cart-close {
-      border-bottom: 2px solid $cartBorderColor;
-      padding-bottom: 20px;
     }
 
     &,
@@ -385,6 +372,15 @@ export default {
       padding-left: 0px;
     }
   }
+}
+
+.cart-title,
+.cart-title-sku,
+.cart-title-quantity,
+.cart-title-empty,
+.cart-close {
+  border-bottom: 2px solid $cartBorderColor;
+  padding-bottom: 20px;
 }
 
 @media screen and (min-width: $sm) {
