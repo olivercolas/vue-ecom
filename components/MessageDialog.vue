@@ -38,9 +38,13 @@ import { State, Action } from 'vuex-class';
 })
 export default class MessageDialog extends Vue {
   @State(state => state.messageDialog.show) show!: boolean;
+  
   @State(state => state.messageDialog.title) title!: string;
+  
   @State(state => state.messageDialog.description) description!: string;
+  
   @State(state => state.messageDialog.link) link!: Link;
+  
   @Action('messageDialog/close') close!: Function;
 }
 </script>

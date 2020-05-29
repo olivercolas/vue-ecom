@@ -128,11 +128,15 @@ import { CartProduct } from '~/models/Cart';
 })
 export default class Cart extends Vue {
   quantities = [1, 2, 3, 4, 5];
+  
   icons = ['visa', 'mastercard', 'paypal', 'alipay'];
+
   windowSize = 0;
 
   @State(state => state.cart.show || false) showCart!: boolean;
+
   @Getter('cart/itemArray') cartItems!: CartProduct[];
+
   @Getter('cart/itemArrayLength') cartLength!: number;
 
   get getTotalPrice(): string {
@@ -153,9 +157,11 @@ export default class Cart extends Vue {
   onResize(): void {
     this.windowSize = window.innerWidth;
   }
+
   calcItemPrice(item: CartProduct): string {
     return (parseInt(item.price, 10) * item.quantity).toFixed(2);
   }
+
   formatCurrency(currency: string, price: string): string {
     switch (currency) {
       case 'GBP':
@@ -164,6 +170,7 @@ export default class Cart extends Vue {
         return '$' + price;
     }
   }
+
   getSkuText(item: CartProduct): string {
     const { sku, variants } = item;
     for (const variant of variants) {
@@ -173,12 +180,15 @@ export default class Cart extends Vue {
     }
     return '';
   }
+
   handleRemoveItem(item: CartProduct): void {
     this.$store.dispatch('cart/remove', item);
   }
+
   handleUpdateQuantity(quantity: number, sku: string): void {
     this.$store.dispatch('cart/updateQuantity', { sku, quantity });
   }
+
   handleCtaClick(): void {
     console.log('proceed to checkout');
   }

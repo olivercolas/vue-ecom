@@ -44,6 +44,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class Logo extends Vue {
   @Prop({default: '24px'}) readonly height!: string;
+  
   @Prop({default: '73px'}) readonly width!: string;
 };
 </script>

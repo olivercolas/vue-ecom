@@ -24,7 +24,9 @@ import Link from "~/components/Link.vue";
 })
 export default class LinkList extends Vue {
   @Prop(Array) readonly links!: [];
+  
   @Prop(Boolean) readonly noPadding!: boolean;
+  
   @Prop(Boolean) readonly dotSeparate!: boolean;
 };
 </script>

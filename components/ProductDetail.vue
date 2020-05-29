@@ -11,6 +11,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class ProductDetail extends Vue {
   @Prop(String) readonly title!: string;
+  
   @Prop(String) readonly text!: string;
 }
 </script>

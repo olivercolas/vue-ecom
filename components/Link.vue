@@ -10,6 +10,7 @@ import  {Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class Link extends Vue {
     @Prop(String) readonly text!: string;
+    
     @Prop(String) readonly url!: string;
 }
 </script>
