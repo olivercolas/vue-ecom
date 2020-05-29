@@ -9,15 +9,17 @@
   </ul>
 </template>
 
-<script>
-import ProductDetail from "./ProductDetail";
-export default {
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import ProductDetail from "./ProductDetail.vue";
+
+@Component({
   components: {
     ProductDetail
   },
-  props: {
-    details: Array
-  }
+})
+export default class ProductDetails extends Vue {
+  @Prop(Array) readonly details!: [];
 };
 </script>
 

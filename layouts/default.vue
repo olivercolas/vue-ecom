@@ -6,16 +6,7 @@
       <nuxt />
     </v-content>
 
-    <v-dialog
-      :value="showCart"
-      fullscreen
-      hide-overlay
-      transition="slide-y-transition"
-    >
-      <v-row justify="center" style="margin:0;">
-        <cart />
-      </v-row>
-    </v-dialog>
+    <cart />
 
     <snackbar />
     <message-dialog />
@@ -25,7 +16,6 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
-import { State } from 'vuex-class';
 import AppBar from '~/components/AppBar.vue';
 import Snackbar from '~/components/Snackbar.vue';
 import Cart from '~/components/Cart.vue';
@@ -41,8 +31,6 @@ import Theme from '~/mixins/theme';
   }
 })
 export default class Layout extends mixins(Theme) {
-  @State(state => state.cart.show || false) showCart: boolean;
-
   mounted() {
     this.$store.dispatch('products/getProducts');
   }

@@ -4,7 +4,7 @@
       <div class="product">
         <img
           :src="selectedImage"
-          class="product_image"
+          class="product__image"
           v-resize="onResize"
           :style="{ height: adjustImageSize }"
         />
@@ -38,94 +38,102 @@
   </div>
 </template>
 
-<script>
-import Logo from '~/components/Logo';
-import LinkList from '~/components/LinkList';
-import ProductDetails from '~/components/ProductDetails';
-import Cta from '~/components/Cta';
-export default {
+<script lang="ts">
+import { Vue, Component, Watch } from 'vue-property-decorator';
+import Logo from '~/components/Logo.vue';
+import LinkList from '~/components/LinkList.vue';
+import ProductDetails from '~/components/ProductDetails.vue';
+import Cta from '~/components/Cta.vue';
+import { Link } from '~/models/Link';
+import { ProductVariant, ProductDetail } from '~/models/Product';
+import { CartProduct } from '~/models/Cart';
+
+@Component({
   components: {
     Logo,
     LinkList,
     ProductDetails,
     Cta
-  },
-  data() {
-    return {
-      selectedImage: '',
-      selectedSKU: 0,
-      windowSize: null
-    };
-  },
-  computed: {
-    product() {
-      const val = this.$store.getters['products/getProductById']('0');
-      return val ? val : {};
-    },
-    adjustImageSize() {
-      if (this.windowSize > 640 && this.selectedSKU === 1) {
-        return '400px';
-      } else if (this.windowSize <= 640 && this.selectedSKU === 1) {
-        return '262px';
-      }
-    },
-    addToCartText() {
-      if (Object.keys(this.product).length > 0) {
-        const { currency, price } = this.product;
-        const text = 'Add to your cart - ';
-        if (currency && price) {
-          switch (currency) {
-            case 'GBP':
-              return text + '£' + price;
-            default:
-              return text + '$' + price;
-          }
-        } else {
-          return '';
+  }
+})
+export default class Main extends Vue {
+  selectedImage = '';
+  selectedSKU = 0;
+  windowSize = 0;
+
+  get product(): CartProduct {
+    const val = this.$store.getters['products/getProductById']('0');
+    return val ? val : {};
+  }
+  get adjustImageSize(): string {
+    if (this.windowSize > 640 && this.selectedSKU === 1) {
+      return '400px';
+    } else if (this.windowSize <= 640 && this.selectedSKU === 1) {
+      return '262px';
+    }
+    
+    return '';
+  }
+  get addToCartText(): string {
+    if (Object.keys(this.product).length > 0) {
+      const { currency, price } = this.product;
+      const text = 'Add to your cart - ';
+      if (currency && price) {
+        switch (currency) {
+          case 'GBP':
+            return text + '£' + price;
+          default:
+            return text + '$' + price;
         }
+      } else {
+        return '';
       }
     }
-  },
-  methods: {
-    productVal(val) {
-      if (this.product) {
-        return this.product[val];
-      }
-    },
-    onProductSKUChange(index) {
-      if (this.product) {
-        const { variants } = this.product;
-        this.selectedImage = variants[index].image;
-      }
-    },
-    onResize(event) {
-      this.windowSize = window.innerWidth;
-    },
-    handleCtaClick(event) {
-      this.$store
-        .dispatch('cart/add', {
-          ...this.product,
-          sku: this.product.variants[this.selectedSKU].sku,
-          quantity: 1
-        })
-        .then(added => {
-          if (added) {
-            this.$store.dispatch('snackbar/open', {
-              message: `${this.product.title} added to the cart`,
-              type: null
-            });
-          }
-        });
+
+    return '';
+  }
+
+  productVal(
+    val: 'variants' | 'breadcrumbs' | 'title' | 'description' | 'details'
+  ): ProductVariant[] | Link[] | string | ProductDetail[] | null {
+    if (this.product) {
+      return this.product[val];
     }
-  },
-  watch: {
-    product(newVal) {
-      if (this.selectedImage === '') {
-        this.selectedImage = newVal.variants[0].image;
-      }
+    return null
+  }
+  onProductSKUChange(index: number): void {
+    if (this.product) {
+      const { variants } = this.product;
+      this.selectedImage = variants[index].image;
     }
   }
-};
+  onResize(): void {
+    this.windowSize = window.innerWidth;
+  }
+  handleCtaClick(): void {
+    this.$store
+      .dispatch('cart/add', {
+        ...this.product,
+        sku: this.product.variants[this.selectedSKU].sku,
+        quantity: 1
+      })
+      .then(added => {
+        if (added) {
+          this.$store.dispatch('snackbar/open', {
+            message: `${this.product.title} added to the cart`,
+            type: null
+          });
+        }
+      });
+  }
+
+  @Watch('product')
+  onChildChanged(val: CartProduct, oldVal: CartProduct) {
+    if (this.selectedImage === '') {
+      this.selectedImage = val.variants[0].image;
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -145,6 +153,14 @@ export default {
     'details';
   padding: 30px 20px;
 }
+
+$mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta' 'details';
+@each $class in $mainClasses {
+  .#{$class} {
+    grid-area: #{$class};
+  }
+}
+
 .logo {
   display: none;
 }
@@ -167,8 +183,22 @@ export default {
   justify-content: center;
   padding-top: 40px;
 
-  &_image {
+  &__image {
     height: 200px;
+  }
+}
+
+.extra-space {
+  margin-top: 40px;
+  background-color: #f6f5e8;
+  height: 500px;
+}
+
+.radio-buttons {
+  margin-bottom: 0px !important;
+
+  &:not(:last-child) {
+    margin-right: 15px;
   }
 }
 
@@ -211,7 +241,7 @@ export default {
     padding-top: 0px;
     margin-bottom: 40px;
 
-    &_image {
+    &__image {
       height: 311px;
     }
   }
@@ -253,42 +283,9 @@ export default {
   .product {
     margin-bottom: 0px;
 
-    &_image {
+    &__image {
       height: 289px;
     }
-  }
-}
-
-.product {
-  grid-area: product;
-}
-.breadcrumbs {
-  grid-area: breadcrumbs;
-}
-.productTitle {
-  grid-area: productTitle;
-}
-.description {
-  grid-area: description;
-}
-.cta {
-  grid-area: cta;
-}
-.details {
-  grid-area: details;
-}
-
-.extra-space {
-  margin-top: 40px;
-  background-color: #f6f5e8;
-  height: 500px;
-}
-
-.radio-buttons {
-  margin-bottom: 0px !important;
-
-  &:not(:last-child) {
-    margin-right: 15px;
   }
 }
 </style>

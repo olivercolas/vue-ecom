@@ -168,16 +168,16 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    icon: {
-      validator: function(value) {
-        // The value must match one of these strings
-        return ["visa", "mastercard", "paypal", "alipay"].indexOf(value) !== -1;
-      }
-    }
-  }
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+type PaymentType = "visa" | "mastercard" | "paypal" | "alipay";
+
+@Component
+export default class PaymentIcon extends Vue {
+  @Prop({validator: function(value) {
+    // The value must match one of these strings
+    return ["visa", "mastercard", "paypal", "alipay"].indexOf(value) !== -1;
+  }}) readonly icon!: PaymentType;
 };
 </script>
 

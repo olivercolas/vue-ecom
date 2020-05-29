@@ -1,167 +1,188 @@
 <template>
-  <div class="cart-container" v-resize="onResize">
-    <div class="grid-container" :data-items="cartLength">
-      <div class="cart-title">Cart</div>
-      <div class="cart-title-sku not-mobile-only">Size</div>
-      <div class="cart-title-quantity not-mobile-only">Quantity</div>
-      <div class="cart-title-empty cart-title-empty-1 not-mobile-only"></div>
-      <div class="cart-title-empty cart-title-empty-2 not-mobile-only"></div>
-      <div class="cart-title-empty cart-title-empty-3 not-mobile-only"></div>
-      <div class="cart-close">
-        <button type="button" @click="$store.dispatch('cart/toggleCart')">
-          <CloseIcon />
-        </button>
-      </div>
+  <v-dialog
+    :value="showCart"
+    fullscreen
+    hide-overlay
+    transition="slide-y-transition"
+  >
+    <v-row justify="center" style="margin:0;">
+      <div class="cart-container" v-resize="onResize">
+        <div class="grid-container" :data-items="cartLength">
+          <div class="cart-title">Cart</div>
+          <div class="cart-title-sku not-mobile-only">Size</div>
+          <div class="cart-title-quantity not-mobile-only">Quantity</div>
+          <div
+            class="cart-title-empty cart-title-empty-1 not-mobile-only"
+          ></div>
+          <div
+            class="cart-title-empty cart-title-empty-2 not-mobile-only"
+          ></div>
+          <div
+            class="cart-title-empty cart-title-empty-3 not-mobile-only"
+          ></div>
+          <div class="cart-close">
+            <button type="button" @click="$store.dispatch('cart/toggleCart')">
+              <CloseIcon />
+            </button>
+          </div>
 
-      <div
-        v-for="(item, index) of cartItems"
-        :key="index"
-        class="cart-item-row"
-        :data-item="index + 1"
-        :style="{
-          marginBottom:
-            windowSize < 640 && index + 1 === cartItems.length ? '250px' : 0
-        }"
-      >
-        <div class="cart-item-title">{{ item.title }}</div>
-        <div class="cart-item-sku">{{ getSkuText(item) }}</div>
-        <div class="cart-item-amount">
-          {{ formatCurrency(item.currency, calcItemPrice(item)) }}
-        </div>
-        <button
-          type="button"
-          class="cart-item-remove"
-          @click="handleRemoveItem(item)"
-        >
-          Remove
-        </button>
-        <div class="cart-item-quantity">
-          <v-select
-            @change="handleUpdateQuantity($event, item)"
-            class="cart-item-quantity_select"
-            color="rgba(255, 254, 242, 0.1)"
-            dark
-            :items="quantities"
-            :value="item.quantity"
-            outlined
-            :rounded="false"
-            item-color="#F6F5E8"
-            :menu-props="{ bottom: true, offsetY: false }"
-          ></v-select>
-        </div>
-      </div>
-
-      <div class="cart-checkout-cta">
-        <p class="cart-checkout-cta__title">
-          Enjoy complimentary shipping on all orders.
-        </p>
-        <v-row class="cart-row">
-          <v-col class="cart-checkout-cta__subtotal-text"
-            >Subtotal (Tax Incl.)</v-col
+          <div
+            v-for="(item, index) of cartItems"
+            :key="index"
+            class="cart-item-row"
+            :data-item="index + 1"
+            :style="{
+              marginBottom:
+                windowSize < 640 && index + 1 === cartItems.length ? '250px' : 0
+            }"
           >
-          <v-col class="cart-checkout-cta__subtotal">{{ getTotalPrice }}</v-col>
-        </v-row>
-        <v-row class="cart-row">
-          <cta
-            :onClick="handleCtaClick"
-            class="cart-cta"
-            text="Checkout"
-            background-color="#EAEADF"
-            color="#212121"
-          />
-        </v-row>
-        <v-row class="cart-row">
-          <ul class="cart-row__payment-icons">
-            <li style="display:inline-block;" v-for="icon of icons" :key="icon">
-              <payment-icon :icon="icon" />
-            </li>
-          </ul>
-        </v-row>
+            <div class="cart-item-title">{{ item.title }}</div>
+            <div class="cart-item-sku">{{ getSkuText(item) }}</div>
+            <div class="cart-item-amount">
+              {{ formatCurrency(item.currency, calcItemPrice(item)) }}
+            </div>
+            <button
+              type="button"
+              class="cart-item-remove"
+              @click="handleRemoveItem(item)"
+            >
+              Remove
+            </button>
+            <div class="cart-item-quantity">
+              <v-select
+                @change="handleUpdateQuantity($event, item.sku)"
+                class="cart-item-quantity_select"
+                color="rgba(255, 254, 242, 0.1)"
+                dark
+                :items="quantities"
+                :value="item.quantity"
+                outlined
+                :rounded="false"
+                item-color="#F6F5E8"
+                :menu-props="{ bottom: true, offsetY: false }"
+              ></v-select>
+            </div>
+          </div>
+
+          <div class="cart-checkout-cta">
+            <p class="cart-checkout-cta__title">
+              Enjoy complimentary shipping on all orders.
+            </p>
+            <v-row class="cart-row">
+              <v-col class="cart-checkout-cta__subtotal-text"
+                >Subtotal (Tax Incl.)</v-col
+              >
+              <v-col class="cart-checkout-cta__subtotal">{{
+                getTotalPrice
+              }}</v-col>
+            </v-row>
+            <v-row class="cart-row">
+              <cta
+                :onClick="handleCtaClick"
+                class="cart-cta"
+                text="Checkout"
+                background-color="#EAEADF"
+                color="#212121"
+              />
+            </v-row>
+            <v-row class="cart-row">
+              <ul class="cart-row__payment-icons">
+                <li
+                  style="display:inline-block;"
+                  v-for="icon of icons"
+                  :key="icon"
+                >
+                  <payment-icon :icon="icon" />
+                </li>
+              </ul>
+            </v-row>
+          </div>
+          <div class="cart-delivery-info not-mobile-only">
+            <p class="cart-delivery-info__title">
+              Complimentary next business day delivery on all orders above £90.
+            </p>
+            <p class="cart-delivery-info__subtitle">
+              Shipping to the United Kingdom.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="cart-delivery-info not-mobile-only">
-        <p class="cart-delivery-info__title">
-          Complimentary next business day delivery on all orders above £90.
-        </p>
-        <p class="cart-delivery-info__subtitle">
-          Shipping to the United Kingdom.
-        </p>
-      </div>
-    </div>
-  </div>
+    </v-row>
+  </v-dialog>
 </template>
 
-<script>
-import Cta from '~/components/Cta';
-import PaymentIcon from '~/components/PaymentIcon';
-import CloseIcon from '~/components/CloseIcon';
-export default {
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+import { Getter, State } from 'vuex-class';
+import Cta from '~/components/Cta.vue';
+import PaymentIcon from '~/components/PaymentIcon.vue';
+import CloseIcon from '~/components/CloseIcon.vue';
+import { CartProduct } from '~/models/Cart';
+
+@Component({
   components: {
     Cta,
     PaymentIcon,
     CloseIcon
-  },
-  data() {
-    return {
-      quantities: [1, 2, 3, 4, 5],
-      icons: ['visa', 'mastercard', 'paypal', 'alipay'],
-      windowSize: null
-    };
-  },
-  computed: {
-    cartItems() {
-      return this.$store.getters['cart/itemArray'];
-    },
-    cartLength() {
-      return this.$store.getters['cart/itemArrayLength'];
-    },
-    getTotalPrice() {
-      let count = 0;
-      let currency = '';
-      for (let i = 0; i < this.cartItems.length; i++) {
-        const item = this.cartItems[i];
+  }
+})
+export default class Cart extends Vue {
+  quantities = [1, 2, 3, 4, 5];
+  icons = ['visa', 'mastercard', 'paypal', 'alipay'];
+  windowSize = 0;
 
-        if (i === 0) {
-          currency = item.currency;
-        }
+  @State(state => state.cart.show || false) showCart!: boolean;
+  @Getter('cart/itemArray') cartItems!: CartProduct[];
+  @Getter('cart/itemArrayLength') cartLength!: number;
 
-        count += parseInt(this.calcItemPrice(item), 10);
+  get getTotalPrice(): string {
+    let count = 0;
+    let currency = '';
+    for (let i = 0; i < this.cartItems.length; i++) {
+      const item = this.cartItems[i];
+
+      if (i === 0) {
+        currency = item.currency;
       }
-      return this.formatCurrency(currency, count.toFixed(2));
+
+      count += parseInt(this.calcItemPrice(item), 10);
     }
-  },
-  methods: {
-    onResize(event) {
-      this.windowSize = window.innerWidth;
-    },
-    calcItemPrice(item) {
-      return (item.price * item.quantity).toFixed(2);
-    },
-    formatCurrency(currency, price) {
-      switch (currency) {
-        case 'GBP':
-          return '£' + price;
-        default:
-          return '$' + price;
-      }
-    },
-    getSkuText({ sku, variants }) {
-      for (const variant of variants) {
-        if (variant.sku === sku) {
-          return variant.text;
-        }
-      }
-    },
-    handleRemoveItem(item) {
-      this.$store.dispatch('cart/remove', item);
-    },
-    handleUpdateQuantity(quantity, { sku }) {
-      this.$store.dispatch('cart/updateQuantity', { sku, quantity });
-    },
-    handleCtaClick() {
-      console.log('proceed to checkout');
+    return this.formatCurrency(currency, count.toFixed(2));
+  }
+
+  onResize(): void {
+    this.windowSize = window.innerWidth;
+  }
+  calcItemPrice(item: CartProduct): string {
+    return (parseInt(item.price, 10) * item.quantity).toFixed(2);
+  }
+  formatCurrency(currency: string, price: string): string {
+    switch (currency) {
+      case 'GBP':
+        return '£' + price;
+      default:
+        return '$' + price;
     }
   }
-};
+  getSkuText(item: CartProduct): string {
+    const { sku, variants } = item;
+    for (const variant of variants) {
+      if (variant.sku === sku) {
+        return variant.text;
+      }
+    }
+    return '';
+  }
+  handleRemoveItem(item: CartProduct): void {
+    this.$store.dispatch('cart/remove', item);
+  }
+  handleUpdateQuantity(quantity: number, sku: string): void {
+    this.$store.dispatch('cart/updateQuantity', { sku, quantity });
+  }
+  handleCtaClick(): void {
+    console.log('proceed to checkout');
+  }
+}
 </script>
 
 <style lang="scss">

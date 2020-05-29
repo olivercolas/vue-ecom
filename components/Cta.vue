@@ -2,14 +2,15 @@
   <button @click="onClick" type="button" :style="{backgroundColor, color}">{{text}}</button>
 </template>
 
-<script>
-export default {
-  props: {
-    text: String,
-    backgroundColor: String,
-    color: String,
-    onClick: Function
-  }
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
+@Component
+export default class Cta extends Vue {
+  @Prop(String) readonly text!: string;
+  @Prop(String) readonly backgroundColor!: string;
+  @Prop(String) readonly color!: string;
+  @Prop(Function) readonly onClick!: Function;
 };
 </script>
 

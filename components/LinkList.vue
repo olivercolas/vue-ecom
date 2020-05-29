@@ -13,17 +13,19 @@
   </ul>
 </template>
 
-<script>
-import Link from "~/components/Link";
-export default {
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import Link from "~/components/Link.vue";
+
+@Component({
   components: {
     Link
   },
-  props: {
-    links: Array,
-    noPadding: Boolean,
-    dotSeparate: Boolean
-  }
+})
+export default class LinkList extends Vue {
+  @Prop(Array) readonly links!: [];
+  @Prop(Boolean) readonly noPadding!: boolean;
+  @Prop(Boolean) readonly dotSeparate!: boolean;
 };
 </script>
 

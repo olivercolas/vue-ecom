@@ -1,5 +1,5 @@
 <template>
-  <a href="#" :style="{height, width}">
+  <a href="#" :style="{ height, width }">
     <svg role="img" viewBox="0 0 489.7 154.3">
       <g>
         <path
@@ -22,7 +22,13 @@
           class="NavLogo-icon--path"
           d="M399.4,49.6c-3.2,4-6.6,9.8-6.6,25.7c0,14.1,3.2,19.4,6.6,23.4c4.1,5,9.6,7.9,17,7.9 c22.9,0,22.9-27.1,22.9-32.3c0-24.2-11.6-33-22-33C408.7,41.2,403.1,44.9,399.4,49.6 M419.3,114.7c-15.1,0-23.6-8.3-26.2-14.9 c0,25.2-0.2,39.8,0.8,54.5c-2.4-0.6-4.5-0.9-8.4-0.9c-4,0-6.1,0.3-8.6,0.9c1.3-20.8,1.8-41.9,1.8-62.7c0-14.6-0.3-34.3-0.8-57.6 c2.2,0.5,4.8,0.9,7.9,0.9c2.9,0,5.6-0.5,7.9-0.9c-0.6,8.8-0.6,11.2-0.6,14.6c2.6-4.2,9.5-15.4,27.3-15.4c16,0,35.6,11.7,35.6,40.3 C455.9,98.8,440.3,114.7,419.3,114.7"
         />
-        <rect x="131.8" y="13.5" class="NavLogo-icon--path" width="44.3" height="5" />
+        <rect
+          x="131.8"
+          y="13.5"
+          class="NavLogo-icon--path"
+          width="44.3"
+          height="5"
+        />
         <path
           class="NavLogo-icon--path"
           d="M477.2,98.1c0,1.6,0,3,0,4.4c1.3,0,4.3,0,4.3-2.3C481.5,98.1,479.2,98.1,477.2,98.1 M484.9,109.1 c-0.4,0-0.7-0.1-1.2-0.1c-0.4,0-0.8,0.1-1.5,0.1c-2-2.9-3.6-4.5-4.7-5.8h-0.4c0,1.8,0,3.2,0.2,5.8c-0.5,0-0.7-0.1-1.3-0.1 c-0.6,0-0.8,0.1-1.1,0.1c0.1-1.3,0.2-2.7,0.2-6.2c0-3-0.1-4.4-0.1-5.7c0.9,0,1.5,0,2.9,0c2.9,0,5.9,0,5.9,2.8c0,2.5-2.7,2.9-3.9,3 c0.8,1.1,4.4,5.1,5.1,5.9L484.9,109.1z M479.2,94.8c-4.8,0-8.5,3.8-8.5,8.6c0,4.9,3.6,8.6,8.5,8.6c4.9,0,8.5-3.7,8.5-8.6 C487.8,98.7,484.3,94.8,479.2,94.8 M479.2,92.9c5.9,0,10.5,4.7,10.5,10.5c0,5.9-4.7,10.5-10.5,10.5c-5.8,0-10.5-4.6-10.5-10.5 C468.8,97.5,473.5,92.9,479.2,92.9"
@@ -32,30 +38,25 @@
   </a>
 </template>
 
-<script>
-export default {
-    props: {
-        height: {
-            type: String,
-            default: '24px'
-        },
-        width: {
-            type: String,
-            default: '73px'
-        },
-    }
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
+@Component
+export default class Logo extends Vue {
+  @Prop({default: '24px'}) readonly height!: string;
+  @Prop({default: '73px'}) readonly width!: string;
 };
 </script>
 
 <style lang="scss" scoped>
-a{
-    margin: 0px 5px;
+a {
+  margin: 0px 5px;
 }
 svg {
-    height: 100%;
-    width: 100%;
-    margin: 6px 0 0;
-    padding: 0;
-    text-indent: -99999px;
+  height: 100%;
+  width: 100%;
+  margin: 6px 0 0;
+  padding: 0;
+  text-indent: -99999px;
 }
 </style>

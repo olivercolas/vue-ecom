@@ -45,7 +45,7 @@ import Theme from '~/mixins/theme';
   }
 })
 export default class AppBar extends mixins(Theme) {
-  @Getter('cart/itemCount') cartCount: number;
+  @Getter('cart/itemCount') cartCount!: number;
 
   headerLinks = {
     left: [

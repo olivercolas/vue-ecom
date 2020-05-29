@@ -22,14 +22,14 @@ import { State, Action } from 'vuex-class';
 
 @Component
 export default class Snackbar extends Vue {
-  @State(state => state.snackbar.show || false) show: boolean;
-  @State(state => state.snackbar.multiLine) multiLine: boolean;
-  @State(state => state.snackbar.timeout) timeout: number;
-  @State(state => state.snackbar.bottom) bottom: boolean;
-  @State(state => state.snackbar.top) top: boolean;
-  @State(state => state.snackbar.vertical) vertical: boolean;
-  @State(state => state.snackbar.color) color: string;
-  @State(state => state.snackbar.message) message: string;
-  @Action('snackbar/close') close: Function
+  @State(state => state.snackbar.show || false) show!: boolean;
+  @State(state => state.snackbar.multiLine) multiLine!: boolean;
+  @State(state => state.snackbar.timeout) timeout!: number;
+  @State(state => state.snackbar.bottom) bottom!: boolean;
+  @State(state => state.snackbar.top) top!: boolean;
+  @State(state => state.snackbar.vertical) vertical!: boolean;
+  @State(state => state.snackbar.color) color!: string;
+  @State(state => state.snackbar.message) message!: string;
+  @Action('snackbar/close') close!: Function;
 }
 </script>
