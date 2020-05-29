@@ -2,12 +2,12 @@
   <div>
     <div class="grid-container">
       <div class="product">
-        <img
-          :src="selectedImage"
-          class="product__image"
-          v-resize="onResize"
-          :style="{ height: adjustImageSize }"
-        />
+        <div class="product__image-container">
+          <img
+            :src="selectedImage"
+            class="product__image-container__image"
+          />
+        </div>
         <v-radio-group @change="onProductSKUChange" v-model="selectedSKU">
           <v-row align-content="center" justify="center">
             <v-radio
@@ -59,21 +59,12 @@ import { CartProduct } from '~/models/Cart';
 export default class Main extends Vue {
   selectedImage = '';
   selectedSKU = 0;
-  windowSize = 0;
 
   get product(): CartProduct {
     const val = this.$store.getters['products/getProductById']('0');
     return val ? val : {};
   }
-  get adjustImageSize(): string {
-    if (this.windowSize > 640 && this.selectedSKU === 1) {
-      return '400px';
-    } else if (this.windowSize <= 640 && this.selectedSKU === 1) {
-      return '262px';
-    }
-    
-    return '';
-  }
+
   get addToCartText(): string {
     if (Object.keys(this.product).length > 0) {
       const { currency, price } = this.product;
@@ -99,17 +90,16 @@ export default class Main extends Vue {
     if (this.product) {
       return this.product[val];
     }
-    return null
+    return null;
   }
+  
   onProductSKUChange(index: number): void {
     if (this.product) {
       const { variants } = this.product;
       this.selectedImage = variants[index].image;
     }
   }
-  onResize(): void {
-    this.windowSize = window.innerWidth;
-  }
+  
   handleCtaClick(): void {
     this.$store
       .dispatch('cart/add', {
@@ -154,7 +144,8 @@ export default class Main extends Vue {
   padding: 30px 20px;
 }
 
-$mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta' 'details';
+$mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta'
+  'details';
 @each $class in $mainClasses {
   .#{$class} {
     grid-area: #{$class};
@@ -183,8 +174,19 @@ $mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta' 'detail
   justify-content: center;
   padding-top: 40px;
 
-  &__image {
+  &__image-container {
+    position: relative;
+    width: 200px;
     height: 200px;
+
+    &__image {
+      position: absolute;
+      left:0px;
+      bottom: 0px;
+      width: 100%;
+      object-fit: cover;
+      max-height: 300px;
+    }
   }
 }
 
@@ -241,8 +243,13 @@ $mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta' 'detail
     padding-top: 0px;
     margin-bottom: 40px;
 
-    &__image {
-      height: 311px;
+    &__image-container {
+      width: 280px;
+      height: 289px;
+
+      &__image {
+        max-height: 330px;
+      }
     }
   }
 }
@@ -282,10 +289,6 @@ $mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta' 'detail
   }
   .product {
     margin-bottom: 0px;
-
-    &__image {
-      height: 289px;
-    }
   }
 }
 </style>
