@@ -19,3 +19,7 @@ export interface Product {
   currency: string;
   variants: ProductVariant[];
 }
+
+export interface ProductState {
+  list: { [key: string]: Product }
+}
