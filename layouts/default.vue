@@ -9,6 +9,7 @@
     <cart />
 
     <snackbar />
+    
     <message-dialog />
   </v-app>
 </template>
