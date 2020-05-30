@@ -128,7 +128,7 @@ import { CartProduct } from '~/models/Cart';
 })
 export default class Cart extends Vue {
   quantities = [1, 2, 3, 4, 5];
-  
+
   icons = ['visa', 'mastercard', 'paypal', 'alipay'];
 
   windowSize = 0;
@@ -435,7 +435,7 @@ export default class Cart extends Vue {
     }
   }
 
-  .cart {
+.cart {
     &-item {
       &-row {
         grid-template-columns: 1.9fr 1.1fr 0.6fr 1.2fr 0.9fr 0.6fr 0.8fr;
@@ -449,7 +449,12 @@ export default class Cart extends Vue {
         }
       }
 
+      &-row:hover &-remove {
+        display: flex;
+        transition: all 0.5s;
+      }
       &-remove {
+        display: none;
         font-size: 0.99rem;
         align-items: center;
       }
