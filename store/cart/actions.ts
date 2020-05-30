@@ -2,6 +2,12 @@ import { ActionTree } from 'vuex';
 import { CartState } from '~/models/Cart';
 import { RootState } from '~/models/Store';
 
+const dialogAttrs = {
+  title: 'Maximum allowed quantity exceeded.',
+  description: 'Our apologies, you have exceeded the maximum allowed quantity of this item.',
+  link: { url: '#', text: 'Need assistance?' },
+};
+
 const actions: ActionTree<CartState, RootState> = {
   add({ commit, dispatch, getters }, payload) {
     const item = getters.hasItemInCart(payload.sku);
@@ -9,11 +15,6 @@ const actions: ActionTree<CartState, RootState> = {
       if (item.quantity < 5) {
         commit('INCREMENT_ITEM_IN_CART', payload);
       } else {
-        const dialogAttrs = {
-          title: 'Maximum allowed quantity exceeded.',
-          description: 'Our apologies, you have exceeded the maximum allowed quantity of this item.',
-          link: { url: '#', text: 'Need assistance?' },
-        };
         dispatch('messageDialog/open', dialogAttrs, { root: true });
         return false;
       }
@@ -22,8 +23,8 @@ const actions: ActionTree<CartState, RootState> = {
     }
     return true;
   },
-  updateQuantity({ state, commit }, payload) {
-    commit('UPDATE_ITEM_IN_CART', payload);
+  addSpecificQuantity({ state, commit }, payload) {
+    commit('ADD_SPECIFIC_QUANTITY', payload);
   },
   remove({ state, commit }, payload) {
     const items = { ...state.items };

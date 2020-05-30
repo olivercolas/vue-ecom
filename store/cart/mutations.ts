@@ -19,7 +19,7 @@ const mutations: MutationTree<CartState> = {
   TOGGLE_CART(state, payload) {
     state.show = !state.show;
   },
-  UPDATE_ITEM_IN_CART(state, { sku, quantity }) {
+  ADD_SPECIFIC_QUANTITY(state, { sku, quantity }) {
     const items = { ...state.items };
     items[sku].quantity = quantity;
     state.items = items;

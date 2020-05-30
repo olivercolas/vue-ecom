@@ -50,7 +50,7 @@
             </button>
             <div class="cart-item-quantity">
               <v-select
-                @change="handleUpdateQuantity($event, item.sku)"
+                @change="handleAddSpecificQuantity($event, item.sku)"
                 class="cart-item-quantity_select"
                 color="rgba(255, 254, 242, 0.1)"
                 dark
@@ -185,8 +185,8 @@ export default class Cart extends Vue {
     this.$store.dispatch('cart/remove', item);
   }
 
-  handleUpdateQuantity(quantity: number, sku: string): void {
-    this.$store.dispatch('cart/updateQuantity', { sku, quantity });
+  handleAddSpecificQuantity(quantity: number, sku: string): void {
+    this.$store.dispatch('cart/addSpecificQuantity', { sku, quantity });
   }
 
   handleCtaClick(): void {
