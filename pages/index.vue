@@ -3,10 +3,7 @@
     <div class="grid-container">
       <div class="product">
         <div class="product__image-container">
-          <img
-            :src="selectedImage"
-            class="product__image-container__image"
-          />
+          <img :src="selectedImage" class="product__image-container__image" />
         </div>
         <v-radio-group @change="onProductSKUChange" v-model="selectedSKU">
           <v-row align-content="center" justify="center">
@@ -92,14 +89,14 @@ export default class Main extends Vue {
     }
     return null;
   }
-  
+
   onProductSKUChange(index: number): void {
     if (this.product) {
       const { variants } = this.product;
       this.selectedImage = variants[index].image;
     }
   }
-  
+
   handleCtaClick(): void {
     this.$store
       .dispatch('cart/add', {
@@ -181,7 +178,7 @@ $mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta'
 
     &__image {
       position: absolute;
-      left:0px;
+      left: 0px;
       bottom: 0px;
       width: 100%;
       object-fit: cover;
@@ -256,7 +253,7 @@ $mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta'
 @media screen and (min-width: $lg) {
   .grid-container {
     display: grid;
-    grid-template-columns: 1fr 0.9fr 1.1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows:
       45px minmax(50px, auto) minmax(50px, auto) minmax(232px, auto)
       minmax(60px, auto);
@@ -264,9 +261,9 @@ $mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta'
     grid-template-areas:
       'logo . breadcrumbs'
       '. . productTitle'
-      'product product description'
-      'product product details'
-      'product product cta';
+      '. product description'
+      '. product details'
+      '. product cta';
     padding: 100px 100px 0 40px;
   }
 
@@ -289,6 +286,15 @@ $mainClasses: 'product' 'breadcrumbs' 'productTitle' 'description' 'cta'
   }
   .product {
     margin-bottom: 0px;
+
+    &__image-container {
+      width: 379px;
+      height: 385px;
+
+      &__image {
+        max-height: 450px;
+      }
+    }
   }
 }
 </style>
