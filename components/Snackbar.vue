@@ -1,19 +1,19 @@
 <template>
-  <v-snackbar
-    :value="show"
-    :multiLine="multiLine"
-    :timeout="timeout"
-    :bottom="bottom"
-    :top="top"
-    :vertical="vertical"
-    :color="
-      color !== '' ? color : null
-    "
-    @click="close()"
-  >
-    <v-spacer></v-spacer>
-    {{ message }}
-  </v-snackbar>
+  <v-slide-y-transition>
+    <v-snackbar
+      :value="show"
+      :multiLine="multiLine"
+      :timeout="timeout"
+      :bottom="bottom"
+      :top="top"
+      :vertical="vertical"
+      :color="color !== '' ? color : null"
+      @click="close()"
+    >
+      <v-spacer></v-spacer>
+      {{ message }}
+    </v-snackbar>
+  </v-slide-y-transition>
 </template>
 
 <script lang="ts">
